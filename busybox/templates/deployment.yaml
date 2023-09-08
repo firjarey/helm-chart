@@ -35,23 +35,3 @@ spec:
             - /dev/null
           initialDelaySeconds: 5
           periodSeconds: 5
-
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ .Values.name }}
-spec:
-  replicas: 1  # Number of desired replicas
-  selector:
-    matchLabels:
-      app: {{ .Values.service.name }}
-  template:
-    metadata:
-      labels:
-        app: {{ .Values.service.name }}
-    spec:
-      containers:
-      - name: busybox-container
-        image: busybox:latest  # Use the latest BusyBox image or specify a specific version
-        command: ["sleep", "3600"]  # Optional: Command to run in the container
