@@ -1,37 +1,57 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: {{ .Values.name }}
+#   labels:
+#     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+# spec:
+#   replicas: {{ .Values.replicaCount }}
+#   selector:
+#     matchLabels:
+#       app: {{ .Values.selector.name }}
+#   template:
+#     metadata:
+#       labels:
+#         app: {{ .Values.name }}
+#     spec:
+#       containers:
+#       - name: {{ .Values.name }}
+#         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+#         imagePullPolicy: {{ .Values.image.pullPolicy }}
+#         ports:
+#         - containerPort: {{ .Values.service.internalPort }}
+#         command: ["tail", "-f", "/dev/null"]
+#         livenessProbe:
+#           exec:
+#             command:
+#             - cat
+#             - /dev/null
+#           initialDelaySeconds: 5
+#           periodSeconds: 5
+#         readinessProbe:
+#           exec:
+#             command:
+#             - cat
+#             - /dev/null
+#           initialDelaySeconds: 5
+#           periodSeconds: 5
+
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.name }}
-  labels:
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1  
   selector:
     matchLabels:
-      app: {{ .Values.selector.name }}
+      app: {{ .Values.service.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.name }}
+        app: {{ .Values.service.name }}
     spec:
       containers:
-      - name: {{ .Values.name }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        ports:
-        - containerPort: {{ .Values.service.internalPort }}
-        command: ["tail", "-f", "/dev/null"]
-        livenessProbe:
-          exec:
-            command:
-            - cat
-            - /dev/null
-          initialDelaySeconds: 5
-          periodSeconds: 5
-        readinessProbe:
-          exec:
-            command:
-            - cat
-            - /dev/null
-          initialDelaySeconds: 5
-          periodSeconds: 5
+      - name: busybox-container
+        image: busybox:latest  
+        command: ["sleep", "3600"]  
